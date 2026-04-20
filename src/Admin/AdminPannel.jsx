@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
 import Header from "./Components/Header";
-import HomePage from "../Admin/Pages/HomePage";
-import LoginPage from "../Admin/Pages/LoginPage";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
 import OrdersPage from "./Pages/OrdersPage";
-import UserDetailPage from "../Admin/Pages/UserDetailPage";
+import UserDetailPage from "./Pages/UserDetailPage";
 import CollectionsPage from "./Pages/CollectionsPage";
-import ProductsPage from "./Pages/CollectionsPage";
+import ProductsPage from "./Pages/ProductsPage";
 import CategoriesPage from "./Pages/CategoriesPage";
 
-function AdminPannel() {
+// Protects a route: redirects to /login if not authenticated
+function ProtectedRoute({ isConnected, children }) {
+  if (!isConnected) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
+
+function AdminPanel() {
   const [isConnected, setIsConnected] = useState(
     localStorage.getItem("isConnected") === "true"
+  );
+  const [adminName, setAdminName] = useState(
+    localStorage.getItem("adminName") || ""
   );
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
@@ -23,44 +34,89 @@ function AdminPannel() {
 
   return (
     <div className="flex">
-      {/* Conditionally render Sidebar and Header */}
-      {!isLoginPage && <Sidebar />}
+      {!isLoginPage && isConnected && <Sidebar />}
       <div className="flex-grow">
-        {!isLoginPage && <Header setIsConnected={setIsConnected} />}
+        {!isLoginPage && isConnected && (
+          <Header setIsConnected={setIsConnected} adminName={adminName} />
+        )}
         <Routes>
+          {/* Default route: redirect based on auth state */}
+          <Route
+            path="/"
+            element={<Navigate to={isConnected ? "/home" : "/login"} replace />}
+          />
+
+          {/* Public route */}
           <Route
             path="/login"
-            element={<LoginPage setIsConnected={setIsConnected} />}
+            element={
+              isConnected ? (
+                <Navigate to="/home" replace />
+              ) : (
+                <LoginPage setIsConnected={setIsConnected} setAdminName={setAdminName} />
+              )
+            }
           />
+
+          {/* Protected routes */}
           <Route
             path="/home"
-            element={isConnected ? <HomePage /> : <LoginPage />}
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <HomePage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/orders"
-            element={isConnected ? <OrdersPage /> : <LoginPage />}
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <OrdersPage />
+              </ProtectedRoute>
+            }
           />
           <Route
-            path="/users/:userId" // Route for user details
-            element={isConnected ? <UserDetailPage /> : <LoginPage />}
+            path="/users/:userId"
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <UserDetailPage />
+              </ProtectedRoute>
+            }
           />
-         
           <Route
             path="/collections"
-            element={isConnected ? <CollectionsPage /> : <LoginPage />}
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <CollectionsPage />
+              </ProtectedRoute>
+            }
           />
-         <Route
+          <Route
             path="/products"
-            element={isConnected ? <ProductsPage /> : <LoginPage />}
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <ProductsPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/categories"
-            element={isConnected ? <CategoriesPage /> : <LoginPage />}
+            element={
+              <ProtectedRoute isConnected={isConnected}>
+                <CategoriesPage />
+              </ProtectedRoute>
+            }
           />
-          </Routes>
+
+          {/* Catch-all: redirect unknown paths */}
+          <Route
+            path="*"
+            element={<Navigate to={isConnected ? "/home" : "/login"} replace />}
+          />
+        </Routes>
       </div>
     </div>
   );
 }
 
-export default AdminPannel;
+export default AdminPanel;
