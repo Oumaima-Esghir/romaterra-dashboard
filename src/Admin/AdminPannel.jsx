@@ -7,7 +7,6 @@ import LoginPage from "./Pages/LoginPage";
 import OrdersPage from "./Pages/OrdersPage";
 import UserDetailPage from "./Pages/UserDetailPage";
 import CollectionsPage from "./Pages/CollectionsPage";
-import ProductsPage from "./Pages/ProductsPage";
 import CategoriesPage from "./Pages/CategoriesPage";
 
 // Protects a route: redirects to /login if not authenticated
@@ -88,14 +87,6 @@ function AdminPanel() {
             element={
               <ProtectedRoute isConnected={isConnected}>
                 <CollectionsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <ProtectedRoute isConnected={isConnected}>
-                <ProductsPage />
               </ProtectedRoute>
             }
           />

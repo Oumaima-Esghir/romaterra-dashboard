@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 function CategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -9,7 +9,7 @@ function CategoriesPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/pubs`);
+        const response = await axiosInstance.get(`/admin/pubs`);
         setCategories(response.data);
       } catch (err) {
         setError("Failed to fetch Categories.");
@@ -23,11 +23,11 @@ function CategoriesPage() {
 
   const handleValidationToggle = async (pubId, isvalidated) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/admin/pubs/${pubId}`, {
+      await axiosInstance.put(`/admin/pubs/${pubId}`, {
         isvalidated: !isvalidated
       });
       // Refresh the list of Categories
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/pubs`);
+      const response = await axiosInstance.get(`/admin/pubs`);
       setCategories(response.data);
     } catch (err) {
       setError("Failed to update Categories validation.");
@@ -70,6 +70,7 @@ function CategoriesPage() {
                   className="h-16 w-16 rounded"
                   src={`${process.env.REACT_APP_API_URL}/images${categorie.pubImage}`}
                   alt={categorie.title}
+                  onError={(e) => { e.target.src = "https://via.placeholder.com/64"; }}
                 />
               </td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{categorie.title}</td>

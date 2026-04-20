@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 import backgroundImage from '../pics/bg.png';
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 import {
@@ -38,7 +38,7 @@ function HomePage() {
         // Start loading
         setLoading(true);
         // Make an API call to fetch publications
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/pubs`);
+        const response = await axiosInstance.get(`/admin/pubs`);
         // Update the state with the fetched data
         setPublications(response.data);
         // Set loading to false as data fetching is done
@@ -67,7 +67,7 @@ function HomePage() {
     acc[category] = (acc[category] || 0) + 1;
     return acc;
   }, {});
-  console.log("Category Distribution:", categories);
+
   // Convert category data to chart format
   const doughnutData = {
     labels: Object.keys(categories),
@@ -198,7 +198,7 @@ function HomePage() {
             Exclusive Promotions
           </h2>
           <p className="text-2xl font-bold text-blue-900">
-            {promotionsCount} Limited Time Offers
+            {publications.length} Total Publications
           </p>
         </div>
       </div>
