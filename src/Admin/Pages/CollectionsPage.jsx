@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 function CollectionsPage() {
   const [collections, setCollections] = useState([]);
@@ -9,7 +9,7 @@ function CollectionsPage() {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/pubs`);
+        const response = await axiosInstance.get(`/admin/pubs`);
         setCollections(response.data);
       } catch (err) {
         setError("Failed to fetch Collections.");
@@ -23,11 +23,11 @@ function CollectionsPage() {
 
   const handleValidationToggle = async (collectionId, isvalidated) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/admin/pubs/${collectionId}`, {
+      await axiosInstance.put(`/admin/pubs/${collectionId}`, {
         isvalidated: !isvalidated
       });
       // Refresh the list of Collections
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/pubs`);
+      const response = await axiosInstance.get(`/admin/pubs`);
       setCollections(response.data);
     } catch (err) {
       setError("Failed to update publication validation.");
@@ -70,6 +70,7 @@ function CollectionsPage() {
                   className="h-16 w-16 rounded"
                   src={`${process.env.REACT_APP_API_URL}/images${collection.Image}`}
                   alt={collection.title}
+                  onError={(e) => { e.target.src = "https://via.placeholder.com/64"; }}
                 />
               </td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-900">{collection.title}</td>

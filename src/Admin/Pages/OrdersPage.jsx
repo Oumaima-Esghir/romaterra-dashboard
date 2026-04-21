@@ -1,60 +1,14 @@
-/*import React, { useState, useEffect } from "react";
-import axios from 'axios';
-import { Link } from 'react-router-dom';*/
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../api/axiosInstance";
 
 function OrdersPage() {
-  /*const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Fetch all orders from the backend when the component mounts
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/admin/users`)
-      .then(response => {
-        setOrders(response.data);  // Set the fetched setOrders in the state
-      })
-      .catch(error => {
-        setError("There was an error fetching the Orders!");
-        console.error(error);
-      });
-  }, []);
-
-  // Handle Orders deletion
-  const handleDelete = async (orderId) => {
-    try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/admin/orders/delete/${orderId}`);
-      setOrders(orders.filter(order => order._id !== orderId));  // Remove the deleted user from the state
-      alert("Order deleted successfully!");
-    } catch (error) {
-      console.error("There was an error deleting the order!", error);
-      alert(`Failed to delete the order: ${error.response?.data?.message || error.message}`);
-    }
-  };
-
-  return (
-    <div>
-      <div className="overflow-x-auto">
-        <h1 className="mb-4 py-4 text-sm text-center font-bold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-3xl">
-          Our
-          <span className="ml-2 underline underline-offset-3 decoration-4 decoration-blue-400">
-            Orders
-          </span>
-        </h1>
-
-        {error && <p className="text-red-500">{error}</p>}  
-        // Display error message if any
-
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          ...
-        </table>
-      </div>
-    </div>
-  );
-  */
-
   const publications = [
     {
-      pubImage: "https://via.placeholder.com/100", // Placeholder image URL
+      pubImage:
+        "https://tophome.tn/upload/a32ca9999d25dd2343981e31c9c071a5.JPG", // Placeholder image URL
       title: "New Features in React 18",
       description: "An in-depth look at the new features in React 18.",
       address: "123 React St, JavaScript City",
@@ -81,51 +35,156 @@ function OrdersPage() {
     },
   ];
 
-  return (
-    <div className="p-4">
-      <h1 className="mb-4 py-4 text-sm text-center font-bold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-3xl">
-        Our
-        <span className="ml-2 underline underline-offset-3 decoration-4 decoration-blue-400">
-          Publications
-        </span>
-      </h1>
+  useEffect(() => {
+    setLoading(true);
+    const fetchOrders = async () => {
+      try {
+        /* const response = await axiosInstance.get(`/admin/users`);
+        setOrders(response.data); */
+        setOrders(publications);
+      } catch (err) {
+        setError("There was an error fetching the Orders!");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      <table className="w-full bg-white shadow-md rounded-lg">
-        <thead>
-          <tr>
-            <th className="px-4 py-2 bg-gray-100">#</th>
-            <th className="px-4 py-2 bg-gray-100">Image</th>
-            <th className="px-4 py-2 bg-gray-100">Title</th>
-            <th className="px-4 py-2 bg-gray-100">Description</th>
-            <th className="px-4 py-2 bg-gray-100">Address</th>
-            <th className="px-4 py-2 bg-gray-100">Rating</th>
-            <th className="px-4 py-2 bg-gray-100">Category</th>
-            <th className="px-4 py-2 bg-gray-100">State</th>
-            <th className="px-4 py-2 bg-gray-100">Percentage</th>
-            <th className="px-4 py-2 bg-gray-100">Validated</th>
-          </tr>
-        </thead>
-        <tbody>
-          {publications.map((publication, index) => (
-            <tr key={index} className="border-b">
-              <td className="px-4 py-2">{index + 1}</td>
-              <td className="px-4 py-2">
-                <img className="h-16 w-16 rounded" src={publication.pubImage} alt={publication.title} />
-              </td>
-              <td className="px-4 py-2">{publication.title}</td>
-              <td className="px-4 py-2">{publication.description}</td>
-              <td className="px-4 py-2">{publication.address}</td>
-              <td className="px-4 py-2">{publication.rating}</td>
-              <td className="px-4 py-2">{publication.category}</td>
-              <td className="px-4 py-2">{publication.state}</td>
-              <td className="px-4 py-2">{publication.percentage}</td>
-              <td className="px-4 py-2">
-                <input type="checkbox" checked={publication.isValidated} readOnly />
-              </td>
+    fetchOrders();
+  }, []);
+
+  const handleDelete = async (orderId) => {
+    try {
+      await axiosInstance.delete(`/admin/orders/delete/${orderId}`);
+      setOrders(orders.filter((order) => order._id !== orderId));
+      alert("Order deleted successfully!");
+    } catch (error) {
+      console.error("There was an error deleting the order!", error);
+      alert(
+        `Failed to delete the order: ${error.response?.data?.message || error.message}`,
+      );
+    }
+  };
+
+  if (loading) return <p className="text-center py-4">Loading...</p>;
+  if (error) return <p className="text-red-500 text-center py-4">{error}</p>;
+
+  return (
+    <div>
+      <div className="overflow-x-auto p-4">
+        <h1 className="mb-4 py-4 text-sm text-center font-bold leading-none tracking-tight text-gray-900 md:text-2xl lg:text-3xl">
+          Our
+          <span className="ml-2 underline underline-offset-3 decoration-4 decoration-blue-400">
+            Orders
+          </span>
+        </h1>
+
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                #
+              </th>
+              <th
+                className="px-4 py-2 text-left text-sm font-medium text-gray-700"
+                style={{ width: "100px", height: "100px" }}
+              >
+                Image
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Title
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Description
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Address
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Rating
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Category
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                State
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Percentage
+              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">
+                Validated
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.length > 0 ? (
+              orders.map((order, index) => (
+                <tr key={order._id} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-2 text-sm">{index + 1 || 1}</td>
+                  <td
+                    className="px-4 py-2 text-sm"
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {order.pubImage ? (
+                      <img
+                        src={order.pubImage}
+                        alt="Order Image"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      "N/A"
+                    )}
+                  </td>
+                  <td className="px-4 py-2 text-sm">{order.title || "N/A"}</td>
+                  <td className="px-4 py-2 text-sm">
+                    {order.description || "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-sm">
+                    {order.address || "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-sm">{order.rating || "N/A"}</td>
+                  <td className="px-4 py-2 text-sm">
+                    {order.category || "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-sm">{order.state || "N/A"}</td>
+                  <td className="px-4 py-2 text-sm">
+                    {order.percentage || "N/A"}
+                  </td>
+                  <td className="px-4 py-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={order.isValidated}
+                      readOnly
+                    />
+                    <button
+                      onClick={() => handleDelete(order._id)}
+                      className="text-red-600 hover:text-red-800 font-semibold"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="px-4 py-4 text-center text-gray-500">
+                  No orders found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

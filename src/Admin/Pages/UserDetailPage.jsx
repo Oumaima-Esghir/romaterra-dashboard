@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import backgroundImage from '../pics/bg.png';
-import axios from "axios";
+import backgroundImage from "../pics/bg.png";
+import axiosInstance from "../../api/axiosInstance";
 
 function UserDetailPage() {
-  const { userId } = useParams(); // Get the userId from the URL
+  const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the user details from the backend using the userId
-    axios
-      .get(`http://localhost:3000/admin/users/${userId}`)
+    axiosInstance
+      .get(`/admin/users/${userId}`)
       .then((response) => {
         setUser(response.data);
         setLoading(false);
       })
-      .catch((error) => {
-        setError("Error fetching user details");
+      .catch(() => {
+        setError("Error fetching user details.");
         setLoading(false);
       });
   }, [userId]);
 
-  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (loading)
+    return <p className="text-center text-gray-500 mt-10">Loading...</p>;
+  if (error)
+    return <p className="text-center text-red-500 mt-10">{error}</p>;
 
-  // Construct the image URL
-  const userImageUrl = user?.image 
-    ? `${process.env.REACT_APP_API_URL}/images/${user.image}` 
+  const userImageUrl = user?.image
+    ? `${process.env.REACT_APP_API_URL}/images/${user.image}`
     : "https://via.placeholder.com/150";
 
   return (
@@ -36,45 +36,39 @@ function UserDetailPage() {
       className="min-h-screen flex items-center justify-center p-4"
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <div className="max-w-2xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="bg-blue-600 p-4"
-          style={{
-            backgroundColor: '#93C2E5',
-            borderColor: '#93C2E5',
-          }}>
-          <h1 className="w-full px-4 py-2 text-white text-center font-bold">
+        <div className="p-4" style={{ backgroundColor: "#93C2E5" }}>
+          <h1 className="text-white text-center font-bold text-xl">
             User Details
           </h1>
         </div>
+
         <div className="p-6">
-          <div className="mb-4">
+          <div className="flex justify-center mb-6">
             <img
-              className="h-20 w-20 rounded-full mx-auto mb-4"
+              className="h-24 w-24 rounded-full border-4 border-[#93C2E5] object-cover"
               src={userImageUrl}
-              alt="User"
+              alt={user.username || "User"}
             />
           </div>
-          <div className="mb-4">
-            <p className="text-gray-700 font-semibold">Username:</p>
-            <p className="text-gray-900">{user.username}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700 font-semibold">Email:</p>
-            <p className="text-gray-900">{user.email}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700 font-semibold">Age:</p>
-            <p className="text-gray-900">{user.age}</p>
-          </div>
-          <div className="mb-4">
-            <p className="text-gray-700 font-semibold">Address:</p>
-            <p className="text-gray-900">{user.adress}</p>
-          </div>
-          {/* Add more user details as needed */}
+
+          {[
+            { label: "Username", value: user.username },
+            { label: "Email", value: user.email },
+            { label: "Age", value: user.age },
+            { label: "Address", value: user.adress || "N/A" },
+          ].map(({ label, value }) => (
+            <div key={label} className="mb-4 border-b pb-2">
+              <p className="text-gray-500 text-sm font-semibold uppercase tracking-wide">
+                {label}
+              </p>
+              <p className="text-gray-900 mt-1">{value}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

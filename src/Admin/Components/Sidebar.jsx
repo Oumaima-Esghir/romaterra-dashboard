@@ -1,29 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import control from "../pics/switch.png";
 import logo2 from "../pics/logo2.png";
 
-function Sidebar({ theme }) {
+function Sidebar() {
   const [open, setOpen] = useState(true);
-  const [showUserSubMenu, setShowUserSubMenu] = useState(false);
-  const userMenuRef = useRef(null);
+  const[showUserSubMenu, setShowUserSubMenu] = useState(false);
 
   const Menus = [
     { title: "Dashboard", src: "dashboard", link: "/home" },
     {
-  title: "Orders",
-  src: "order",
-  iconSize: "w-1 h-1",
-  gap: true,
-  link: "/orders",
-},
-{
-  title: "Products",
-  src: "product",
-  iconSize: "w-4 h-4",
-  gap: true,
-  link: "/products",
-},
+      title: "Orders",
+      src: "order",
+      iconSize: "w-1 h-1",
+      gap: true,
+      link: "/orders",
+    },
     {
       title: "Collections",
       src: "collection",
@@ -38,25 +30,13 @@ function Sidebar({ theme }) {
     },
   ];
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleClickOutside = (event) => {
-    if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-      setShowUserSubMenu(false);
-    }
-  };
-
-  const toggleUserSubMenu = () => {
-    setShowUserSubMenu(!showUserSubMenu);
-  };
 
   const handleSubmenuClick = () => {
     setShowUserSubMenu(false);
+  };
+  
+   const toggleUserSubMenu = () => {
+    setShowUserSubMenu(!showUserSubMenu);
   };
 
   return (
@@ -95,9 +75,8 @@ function Sidebar({ theme }) {
           {Menus.map((Menu, index) => (
             <li
               key={index}
-              ref={Menu.title === "Accounts" ? userMenuRef : null}
-              className={`flex flex-col  ${
-                Menu.title === "Accounts" && "relative"
+              className={`flex flex-col ${
+                Menu.gap ? "mt-5" : "mt-2"
               }`}
             >
               <div
@@ -138,19 +117,6 @@ function Sidebar({ theme }) {
                   </Link>
                 )}
               </div>
-              {Menu.title === "Accounts" && showUserSubMenu && (
-                <ul className="absolute top-full left-0 w-44 bg-LightBlue rounded-lg shadow-md mt-1">
-                  {Menu.submenus.map((submenu, subIndex) => (
-                    <li
-                      key={subIndex}
-                      className="text-white py-2 px-4 hover:bg-DarkBlue cursor-pointer"
-                      onClick={handleSubmenuClick}
-                    >
-                      <Link to={submenu.link}>{submenu.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </li>
           ))}
         </ul>
