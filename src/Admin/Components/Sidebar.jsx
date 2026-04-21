@@ -5,6 +5,7 @@ import logo2 from "../pics/logo2.png";
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
+  const[showUserSubMenu, setShowUserSubMenu] = useState(false);
 
   const Menus = [
     { title: "Dashboard", src: "dashboard", link: "/home" },
@@ -32,6 +33,10 @@ function Sidebar() {
 
   const handleSubmenuClick = () => {
     setShowUserSubMenu(false);
+  };
+  
+   const toggleUserSubMenu = () => {
+    setShowUserSubMenu(!showUserSubMenu);
   };
 
   return (
