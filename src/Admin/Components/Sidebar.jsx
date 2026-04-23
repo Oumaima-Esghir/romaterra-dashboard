@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import control from "../pics/switch.png";
-import logo2 from "../pics/logo2.png";
+import logo from "../pics/logo.png";
 
 function Sidebar({ theme }) {
   const [open, setOpen] = useState(true);
@@ -17,13 +17,6 @@ function Sidebar({ theme }) {
   gap: true,
   link: "/orders",
 },
-{
-  title: "Products",
-  src: "product",
-  iconSize: "w-4 h-4",
-  gap: true,
-  link: "/products",
-},
     {
       title: "Collections",
       src: "collection",
@@ -31,7 +24,7 @@ function Sidebar({ theme }) {
       link: "/collections",
     },
     {
-      title: "Categories",
+      title: "Categories & Products",
       src: "categorie",
       gap: true,
       link: "/categories",
@@ -77,19 +70,12 @@ function Sidebar({ theme }) {
         />
         <div className="flex gap-x-2 items-center p-4">
           <img
-            src={logo2}
+            src={logo}
             alt="Logo"
-            className={`cursor-pointer w-25 duration-500 block float-left ${
+            className={`cursor-pointer w-22 duration-500 block float-left ${
               open && "rotate-[360deg]"
             }`}
           />
-         { /*<h1
-            className={`text-white origin-left font-medium text-xl duration-200 ${
-              !open && "scale-0"
-            }`}
-          >
-            <span className="text-[#884B2C] font-script text-xl">Roma</span>Terra
-          </h1>*/}
         </div>
         <ul className="px-8">
           {Menus.map((Menu, index) => (
