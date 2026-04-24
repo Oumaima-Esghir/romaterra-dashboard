@@ -33,8 +33,8 @@ function CollectionsPage() {
         currentCollections.map((collection) =>
           collection._id === collectionId
             ? { ...collection, isvalidated: !isvalidated }
-            : collection
-        )
+            : collection,
+        ),
       );
     } catch (err) {
       setError("Failed to update collection validation.");
@@ -43,7 +43,7 @@ function CollectionsPage() {
 
   const handleDelete = (id) => {
     setCollections((currentCollections) =>
-      currentCollections.filter((collection) => collection._id !== id)
+      currentCollections.filter((collection) => collection._id !== id),
     );
   };
 
@@ -103,20 +103,28 @@ function CollectionsPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="11" className="px-4 py-6 text-center text-gray-500">
+                <td
+                  colSpan="11"
+                  className="px-4 py-6 text-center text-gray-500"
+                >
                   Loading collections...
                 </td>
               </tr>
             ) : collections.length === 0 ? (
               <tr>
-                <td colSpan="11" className="px-4 py-6 text-center text-gray-500">
+                <td
+                  colSpan="11"
+                  className="px-4 py-6 text-center text-gray-500"
+                >
                   No collections found.
                 </td>
               </tr>
             ) : (
               collections.map((collection, index) => (
                 <tr key={collection._id} className="border-t hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {index + 1}
+                  </td>
 
                   <td className="px-4 py-3">
                     <img
@@ -161,7 +169,7 @@ function CollectionsPage() {
                         onChange={() =>
                           handleValidationToggle(
                             collection._id,
-                            collection.isvalidated
+                            collection.isvalidated,
                           )
                         }
                       />
