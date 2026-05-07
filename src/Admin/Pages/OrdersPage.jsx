@@ -1,39 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosInstance";
+import CreateOrder from "../Components/create-order.jsx";
+
+const mockOrders = [
+  {
+    _id: "1",
+    customerName: "Jane Doe",
+    customerEmail: "jane@example.com",
+    shippingAddress: "123 React St, JavaScript City",
+    status: "pending",
+    items: [{ product: { name: "Ceramic Vase" }, quantity: 2, price: 45 }],
+    totalAmount: 90,
+  },
+  {
+    _id: "2",
+    customerName: "John Smith",
+    customerEmail: "john@example.com",
+    shippingAddress: "456 CSS Ave, Styling Town",
+    status: "paid",
+    items: [{ product: { name: "Clay Mug" }, quantity: 1, price: 18 }],
+    totalAmount: 18,
+  },
+];
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const publications = [
-    {
-      pubImage:
-        "https://tophome.tn/upload/a32ca9999d25dd2343981e31c9c071a5.JPG", // Placeholder image URL
-      title: "New Features in React 18",
-      description: "An in-depth look at the new features in React 18.",
-      address: "123 React St, JavaScript City",
-      rating: 4.5,
-      category: "Tech",
-      state: "Promo", // Could be 'Promo' or 'Regular'
-      percentage: "20%",
-      isValidated: true,
-      postedDate: "2024-08-01",
-      author: "Jane Doe",
-    },
-    {
-      pubImage: "https://via.placeholder.com/100",
-      title: "Understanding Tailwind CSS",
-      description: "A comprehensive guide to using Tailwind CSS.",
-      address: "456 CSS Ave, Styling Town",
-      rating: 4.2,
-      category: "Design",
-      state: "Regular",
-      percentage: "0%",
-      isValidated: false,
-      postedDate: "2024-07-25",
-      author: "John Smith",
-    },
-  ];
+  const [showCreateOrder, setShowCreateOrder] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -41,7 +35,7 @@ function OrdersPage() {
       try {
         /* const response = await axiosInstance.get(`/admin/users`);
         setOrders(response.data); */
-        setOrders(publications);
+        setOrders(mockOrders);
       } catch (err) {
         setError("There was an error fetching the Orders!");
         console.error(err);
@@ -66,6 +60,23 @@ function OrdersPage() {
     }
   };
 
+  const handleAddOrder = (orderData) => {
+    setOrders((currentOrders) => [
+      {
+        ...orderData,
+        _id: Date.now().toString(),
+      },
+      ...currentOrders,
+    ]);
+    setShowCreateOrder(false);
+  };
+
+  const getProductName = (item) => {
+    if (typeof item.product === "object") return item.product?.name || "Product";
+
+    return item.product || "Product";
+  };
+
   if (loading) return <p className="text-center py-4">Loading...</p>;
   if (error) return <p className="text-red-500 text-center py-4">{error}</p>;
 
@@ -84,7 +95,7 @@ function OrdersPage() {
           </h1>
 
           <button
-            //onClick={() => navigate("/create-collection")}
+            onClick={() => setShowCreateOrder(true)}
             className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
           >
             + Add Order
@@ -95,15 +106,13 @@ function OrdersPage() {
             <thead>
               <tr className="bg-gray-100 text-sm text-gray-700">
                 <th className="px-4 py-3 text-left">#</th>
-                <th className="px-4 py-3 text-left">Image</th>
-                <th className="px-4 py-3 text-left">Title</th>
-                <th className="px-4 py-3 text-left">Description</th>
-                <th className="px-4 py-3 text-left">Address</th>
-                <th className="px-4 py-3 text-left">Rating</th>
-                <th className="px-4 py-3 text-left">Category</th>
-                <th className="px-4 py-3 text-left">State</th>
-                <th className="px-4 py-3 text-center">Percentage</th>
-                <th className="px-4 py-3 text-center">Validated</th>
+                <th className="px-4 py-3 text-left">Customer</th>
+                <th className="px-4 py-3 text-left">Email</th>
+                <th className="px-4 py-3 text-left">Items</th>
+                <th className="px-4 py-3 text-left">Total</th>
+                <th className="px-4 py-3 text-left">Status</th>
+                <th className="px-4 py-3 text-left">Shipping Address</th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -111,56 +120,34 @@ function OrdersPage() {
                 orders.map((order, index) => (
                   <tr key={order._id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-2 text-sm">{index + 1 || 1}</td>
-                    <td
-                      className="px-4 py-2 text-sm"
-                      style={{
-                        width: "120px",
-                        height: "120px",
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {order.pubImage ? (
-                        <img
-                          src={order.pubImage}
-                          alt="Order Image"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        "N/A"
-                      )}
+                    <td className="px-4 py-2 text-sm">
+                      {order.customerName || "N/A"}
                     </td>
                     <td className="px-4 py-2 text-sm">
-                      {order.title || "N/A"}
+                      {order.customerEmail || "N/A"}
                     </td>
                     <td className="px-4 py-2 text-sm">
-                      {order.description || "N/A"}
+                      {order.items?.length
+                        ? order.items
+                            .map(
+                              (item) =>
+                                `${getProductName(item)} x ${item.quantity}`,
+                            )
+                            .join(", ")
+                        : "N/A"}
                     </td>
                     <td className="px-4 py-2 text-sm">
-                      {order.address || "N/A"}
+                      {order.totalAmount ?? "N/A"}
                     </td>
                     <td className="px-4 py-2 text-sm">
-                      {order.rating || "N/A"}
+                      <span className="rounded-full bg-[#F4E5C8] px-3 py-1 text-xs font-medium capitalize text-[#884B2C]">
+                        {order.status || "pending"}
+                      </span>
                     </td>
                     <td className="px-4 py-2 text-sm">
-                      {order.category || "N/A"}
+                      {order.shippingAddress || "N/A"}
                     </td>
-                    <td className="px-4 py-2 text-sm">
-                      {order.state || "N/A"}
-                    </td>
-                    <td className="px-4 py-2 text-sm">
-                      {order.percentage || "N/A"}
-                    </td>
-                    <td className="px-4 py-2 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={order.isValidated}
-                        readOnly
-                      />
+                    <td className="px-4 py-2 text-center text-sm">
                       <button
                         onClick={() => handleDelete(order._id)}
                         className="text-red-600 hover:text-red-800 font-semibold"
@@ -173,7 +160,7 @@ function OrdersPage() {
               ) : (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan="8"
                     className="px-4 py-4 text-center text-gray-500"
                   >
                     No orders found
@@ -184,6 +171,12 @@ function OrdersPage() {
           </table>
         </div>
       </div>
+      {showCreateOrder && (
+        <CreateOrder
+          onClose={() => setShowCreateOrder(false)}
+          onAddOrder={handleAddOrder}
+        />
+      )}
     </div>
   );
 }
