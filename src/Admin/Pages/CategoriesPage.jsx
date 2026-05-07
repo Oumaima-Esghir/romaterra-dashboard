@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import CreateCategory from "./create-category.jsx";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -8,6 +9,9 @@ function CategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [showCreateCategory, setShowCreateCategory] = useState(false);
+  const [showCreateProduct, setShowCreateProduct] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -78,7 +82,7 @@ function CategoriesPage() {
 
         <div className="flex flex-wrap gap-3">
           <button
-            onClick={() => navigate("/create-category")}
+            onClick={() => setShowCreateCategory(true)}
             className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
           >
             + Add Category
@@ -219,6 +223,12 @@ function CategoriesPage() {
           </tbody>
         </table>
       </div>
+      {showCreateCategory && (
+        <CreateCategory
+          onClose={() => setShowCreateCategory(false)}
+          onAddCollection={() => setShowCreateCategory(false)}
+        />
+      )}
     </div>
   );
 }

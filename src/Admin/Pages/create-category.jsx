@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateCategory() {
+function CreateCategory({ onClose, onAddCollection }) {
   const navigate = useNavigate();
 
   const [categoryName, setCategoryName] = useState("");
@@ -20,25 +20,25 @@ function CreateCategory() {
   };
 
   return (
-    <div className="p-6">
-
-      {/* TITLE */}
-      <h1
-        className="mb-6"
-        style={{
-          fontFamily: "'Style Script', cursive",
-          fontSize: "32px",
-          color: "#884B2C",
-        }}
-      >
-        Create Category
-      </h1>
-
+    <div
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden 
+      bg-white/30 backdrop-blur-sm transition-transform z-50"
+    >
       {/* FORM CARD */}
-      <div className="max-w-xl bg-white shadow-md rounded-lg p-6 border">
+      <div className="flex flex-col w-full max-w-2xl bg-white shadow-md rounded-lg p-6 border">
+        {/* TITLE */}
+        <h1
+          className="mb-6"
+          style={{
+            fontFamily: "'Style Script', cursive",
+            fontSize: "32px",
+            color: "#884B2C",
+          }}
+        >
+          Create Category
+        </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
           {/* CATEGORY NAME */}
           <div>
             <label className="block text-sm mb-2 text-gray-700">
@@ -56,10 +56,9 @@ function CreateCategory() {
 
           {/* BUTTONS */}
           <div className="flex gap-3 justify-end">
-
             <button
               type="button"
-              onClick={() => navigate("/categories")}
+              onClick={onClose}
               className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
             >
               Cancel
@@ -67,15 +66,13 @@ function CreateCategory() {
 
             <button
               type="submit"
+              onClick={onAddCollection}
               className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
             >
               Save Category
             </button>
-
           </div>
-
         </form>
-
       </div>
     </div>
   );
