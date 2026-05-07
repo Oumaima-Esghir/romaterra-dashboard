@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateProduct() {
+function CreateProduct( { onClose, onAddCollection }) {
   const navigate = useNavigate();
 
   // 🧠 CATEGORY LIST
@@ -12,7 +12,7 @@ function CreateProduct() {
     "Summer Collection",
     "New Arrival",
     "Best Sellers",
-    "Handmade Collection"
+    "Handmade Collection",
   ];
 
   const [form, setForm] = useState({
@@ -24,7 +24,7 @@ function CreateProduct() {
     category: "",
     collection: "",
     state: "available",
-    qty: ""
+    qty: "",
   });
 
   const [images, setImages] = useState([]);
@@ -45,7 +45,7 @@ function CreateProduct() {
 
     const productData = {
       ...form,
-      images
+      images,
     };
 
     // 🧠 API CALL LATER
@@ -55,25 +55,25 @@ function CreateProduct() {
   };
 
   return (
-    <div className="p-6">
-
-      {/* TITLE */}
-      <h1
-        className="mb-6"
-        style={{
-          fontFamily: "'Style Script', cursive",
-          fontSize: "32px",
-          color: "#884B2C",
-        }}
-      >
-        Create Product
-      </h1>
-
+    <div
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden 
+      bg-white/30 backdrop-blur-sm transition-transform z-50"
+    >
       {/* FORM CARD */}
-      <div className="max-w-3xl bg-white shadow-md rounded-lg p-6 border">
+      <div className="flex flex-col w-full max-w-3xl bg-white shadow-md rounded-lg p-6 border">
+        {/* TITLE */}
+        <h1
+          className="mb-6"
+          style={{
+            fontFamily: "'Style Script', cursive",
+            fontSize: "32px",
+            color: "#884B2C",
+          }}
+        >
+          Create Product
+        </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-
           {/* NAME */}
           <input
             type="text"
@@ -96,7 +96,6 @@ function CreateProduct() {
 
           {/* PRICE + PROMO */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
             <input
               type="text"
               name="price"
@@ -114,12 +113,10 @@ function CreateProduct() {
               onChange={handleChange}
               className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
             />
-
           </div>
 
           {/* SIZE + QTY */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
             <input
               type="text"
               name="size"
@@ -137,7 +134,6 @@ function CreateProduct() {
               onChange={handleChange}
               className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
             />
-
           </div>
 
           {/* CATEGORY */}
@@ -206,10 +202,9 @@ function CreateProduct() {
 
           {/* BUTTONS */}
           <div className="flex justify-end gap-3">
-
             <button
               type="button"
-              onClick={() => navigate("/categories")}
+              onClick={onClose}
               className="px-4 py-2 border rounded-md hover:bg-gray-100"
             >
               Cancel
@@ -217,15 +212,13 @@ function CreateProduct() {
 
             <button
               type="submit"
+              onClick={onAddCollection}
               className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
             >
               Create Product
             </button>
-
           </div>
-
         </form>
-
       </div>
     </div>
   );

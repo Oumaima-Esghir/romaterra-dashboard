@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "./create-category.jsx";
+import CreateProduct from "./create-product.jsx";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ function CategoriesPage() {
           </button>
 
           <button
-            onClick={() => navigate("/create-product")}
+            onClick={() => setShowCreateProduct(true)}
             className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
           >
             + Add New Product
@@ -227,6 +228,12 @@ function CategoriesPage() {
         <CreateCategory
           onClose={() => setShowCreateCategory(false)}
           onAddCollection={() => setShowCreateCategory(false)}
+        />
+      )}
+      {showCreateProduct && (
+        <CreateProduct
+          onClose={() => setShowCreateProduct(false)}
+          onAddCollection={() => setShowCreateProduct(false)}
         />
       )}
     </div>
