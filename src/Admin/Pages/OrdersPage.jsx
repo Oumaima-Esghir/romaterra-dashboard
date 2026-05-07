@@ -33,11 +33,11 @@ function OrdersPage() {
     setLoading(true);
     const fetchOrders = async () => {
       try {
-        /* const response = await axiosInstance.get(`/admin/users`);
-        setOrders(response.data); */
-        setOrders(mockOrders);
+        const response = await axiosInstance.get(`/admin/users`);
+        setOrders(response.data);
+        // setOrders(mockOrders);
       } catch (err) {
-        setError("There was an error fetching the Orders!");
+        setError("Failed to fetch Orders!");
         console.error(err);
       } finally {
         setLoading(false);
@@ -72,13 +72,11 @@ function OrdersPage() {
   };
 
   const getProductName = (item) => {
-    if (typeof item.product === "object") return item.product?.name || "Product";
+    if (typeof item.product === "object")
+      return item.product?.name || "Product";
 
     return item.product || "Product";
   };
-
-  if (loading) return <p className="text-center py-4">Loading...</p>;
-  if (error) return <p className="text-red-500 text-center py-4">{error}</p>;
 
   return (
     <div>
@@ -101,6 +99,11 @@ function OrdersPage() {
             + Add Order
           </button>
         </div>
+        {error && (
+          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
           <table className="w-full">
             <thead>
@@ -116,7 +119,16 @@ function OrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {orders.length > 0 ? (
+              {loading ? (
+                <tr>
+                  <td
+                    colSpan="11"
+                    className="px-4 py-6 text-center text-gray-500"
+                  >
+                    Loading orders...
+                  </td>
+                </tr>
+              ) : orders.length > 0 ? (
                 orders.map((order, index) => (
                   <tr key={order._id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-2 text-sm">{index + 1 || 1}</td>
