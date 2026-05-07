@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import CreateCollection from "./create-collection.jsx";
 
 function CollectionsPage() {
   const navigate = useNavigate();
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -22,6 +25,10 @@ function CollectionsPage() {
 
     fetchCollections();
   }, []);
+
+  const handelAddCollection = () => {
+    setShowCreateModal(true);
+  };
 
   const handleValidationToggle = async (collectionId, isvalidated) => {
     try {
@@ -69,7 +76,7 @@ function CollectionsPage() {
         </h1>
 
         <button
-          onClick={() => navigate("/create-collection")}
+          onClick={handelAddCollection}
           className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
         >
           + Add Collection
@@ -210,6 +217,13 @@ function CollectionsPage() {
           </tbody>
         </table>
       </div>
+      {/* MODAL Add Collection */}
+      {showCreateModal && (
+        <CreateCollection
+          onClose={() => setShowCreateModal(false)}
+          onAddCollection={() => setShowCreateModal(false)}
+        />
+      )}
     </div>
   );
 }
