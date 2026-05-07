@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
-function CreateProduct( { onClose, onAddCollection }) {
+function CreateProduct({ onClose, onAddCollection }) {
   const navigate = useNavigate();
 
   // 🧠 CATEGORY LIST
@@ -16,15 +17,17 @@ function CreateProduct( { onClose, onAddCollection }) {
   ];
 
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    price: "",
+    name: "aa",
+    description: "aaa",
+    price: 10,
+    quantityInStock: 100,
+    colors: "red",
+    images: [],
     promoPrice: "",
     size: "",
-    category: "",
-    collection: "",
+    category: "665f1a2b3c4d5e6f78901234",
+    collection: "665f1a2b3c4d5e6f78901236",
     state: "available",
-    qty: "",
   });
 
   const [images, setImages] = useState([]);
@@ -49,6 +52,14 @@ function CreateProduct( { onClose, onAddCollection }) {
     };
 
     // 🧠 API CALL LATER
+    axiosInstance
+      .post("/products/", productData)
+      .then((response) => {
+        console.log("Product created successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error creating product:", error);
+      });
     console.log("PRODUCT CREATED:", productData);
 
     navigate("/categories");
@@ -128,9 +139,9 @@ function CreateProduct( { onClose, onAddCollection }) {
 
             <input
               type="number"
-              name="qty"
-              placeholder="Quantity"
-              value={form.qty}
+              name="quantityInStock"
+              placeholder="Quantity in Stock"
+              value={form.quantityInStock}
               onChange={handleChange}
               className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
             />
@@ -212,7 +223,7 @@ function CreateProduct( { onClose, onAddCollection }) {
 
             <button
               type="submit"
-              onClick={onAddCollection}
+              onClick={handleSubmit}
               className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
             >
               Create Product

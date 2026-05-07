@@ -17,7 +17,7 @@ function CategoriesPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosInstance.get("/admin/pubs");
+        const response = await axiosInstance.get("/products/");
         setProducts(response.data);
       } catch (err) {
         setError("Failed to fetch categories and products.");
