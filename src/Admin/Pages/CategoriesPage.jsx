@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
-import CreateCategory from "./create-category.jsx";
-import CreateProduct from "./create-product.jsx";
+import CreateCategory from "../Components/create-category.jsx";
+import CreateProduct from "../Components/create-product.jsx";
 
 function CategoriesPage() {
   const navigate = useNavigate();

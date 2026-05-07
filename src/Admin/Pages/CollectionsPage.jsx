@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
-import CreateCollection from "./create-collection.jsx";
+import CreateCollection from "../Components/create-collection.jsx";
 
 function CollectionsPage() {
   const navigate = useNavigate();

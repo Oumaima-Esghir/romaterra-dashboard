@@ -10,14 +10,11 @@ import OrdersPage from "./Pages/OrdersPage";
 import CollectionsPage from "./Pages/CollectionsPage";
 import CategoriesPage from "./Pages/CategoriesPage";
 
-import CreateProduct from "./Pages/create-product";
 import EditProduct from "./Pages/edit-product";
 import ViewProduct from "./Pages/view-product";
 import UserDetailPage from "./Pages/UserDetailPage";
 
-import CreateCategory from "./Pages/create-category";
 
-import CreateCollection from "./Pages/create-collection";
 import ViewCollection from "./Pages/view-collection";
 import EditCollection from "./Pages/edit-collection";
 
@@ -107,9 +104,6 @@ function AdminPannel() {
             path="/categories"
             element={isConnected ? <CategoriesPage /> : <LoginPage />}
           />*/}
-          <Route 
-          path="/create-product" 
-          element={<CreateProduct />} />
 
           <Route
            path="/edit-product/:id" 
@@ -119,14 +113,6 @@ function AdminPannel() {
           <Route
           path="/view-product/:id" 
           element={<ViewProduct />} />
-
-          <Route 
-          path="/create-category"
-          element={<CreateCategory />} />
-
-          <Route 
-          path="/create-collection"
-          element={<CreateCollection />} />
          
           <Route 
           path="/view-collection/:id" 
