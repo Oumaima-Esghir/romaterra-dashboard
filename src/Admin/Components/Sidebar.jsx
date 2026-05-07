@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import control from "../pics/switch.png";
 import logo from "../pics/logo.png";
 
 function Sidebar() {
   const [open, setOpen] = useState(true);
-  const[showUserSubMenu, setShowUserSubMenu] = useState(false);
+  const [showUserSubMenu, setShowUserSubMenu] = useState(false);
 
   const Menus = [
     { title: "Dashboard", src: "dashboard", link: "/home" },
@@ -30,24 +30,23 @@ function Sidebar() {
     },
   ];
 
-
   const handleSubmenuClick = () => {
     setShowUserSubMenu(false);
   };
-  
-   const toggleUserSubMenu = () => {
+
+  const toggleUserSubMenu = () => {
     setShowUserSubMenu(!showUserSubMenu);
   };
 
   return (
     <div className="flex h-screen">
-    <div
-  className={`${
-    open ? "w-72" : "w-32"
-  } h-screen p-2 pt-8 relative duration-300
+      <div
+        className={`${
+          open ? "w-72" : "w-32"
+        } h-screen p-2 pt-8 relative duration-300
   bg-gradient-to-b from-[#F4E5C8]/50 via-[#F4E5C8]/75 to-[#FF4E5C8]/95
   backdrop-blur-2xl`}
->
+      >
         <img
           src={control}
           alt="Control icon"
@@ -68,15 +67,13 @@ function Sidebar() {
           {Menus.map((Menu, index) => (
             <li
               key={index}
-              className={`flex flex-col ${
-                Menu.gap ? "mt-5" : "mt-2"
-              }`}
+              className={`flex flex-col ${Menu.gap ? "mt-5" : "mt-2"}`}
             >
-              <div
-                className={`rounded-md p-2 cursor-pointer hover:bg-[#A2664E] text-white text-sm items-center gap-x-4 
+              {Menu.submenus ? (
+                <div
+                  className={`rounded-md p-2 cursor-pointer hover:bg-[#A2664E] text-white text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-5" : "mt-2"}`}
-              >
-                {Menu.submenus ? (
+                >
                   <div onClick={toggleUserSubMenu}>
                     <div className="flex">
                       <img
@@ -92,24 +89,31 @@ function Sidebar() {
                       </span>
                     </div>
                   </div>
-                ) : (
-                  <Link to={Menu.link} className="no-underline text-white">
-                    <div className="flex">
-                      <img
-                        src={require(`../pics/${Menu.src}.png`)}
-                        alt={Menu.title}
-                      />
-                      <span
-                        className={`origin-left duration-200 ml-5 text-black font-medium ${
-                          !open && "hidden"
-                        }`}
-                      >
-                        {Menu.title}
-                      </span>
-                    </div>
-                  </Link>
-                )}
-              </div>
+                </div>
+              ) : (
+                <NavLink
+                  to={Menu.link}
+                  className={({ isActive }) =>
+                    `block rounded-md p-2 cursor-pointer hover:bg-[#A2664E] text-sm items-center gap-x-4 no-underline ${
+                      Menu.gap ? "mt-5" : "mt-2"
+                    } ${isActive ? "bg-[#A2664E] text-white" : " text-black"}`
+                  }
+                >
+                  <div className="flex">
+                    <img
+                      src={require(`../pics/${Menu.src}.png`)}
+                      alt={Menu.title}
+                    />
+                    <span
+                      className={`origin-left duration-200 ml-5 font-medium ${
+                        !open && "hidden"
+                      }`}
+                    >
+                      {Menu.title}
+                    </span>
+                  </div>
+                </NavLink>
+              )}
             </li>
           ))}
         </ul>
