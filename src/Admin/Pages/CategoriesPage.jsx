@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "../Components/create-category.jsx";
 import CreateProduct from "../Components/create-product.jsx";
+import ViewProduct from "../Components/view-product.jsx";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -223,6 +224,8 @@ function CategoriesPage() {
           onAddCollection={() => setShowCreateProduct(false)}
         />
       )}
+
+      <ViewProduct />
     </div>
   );
 }
