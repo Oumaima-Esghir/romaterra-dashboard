@@ -169,7 +169,7 @@ function CategoriesPage() {
                     {product.price?.toLocaleString() + " DT" || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.promoPrice?.toLocaleString() + " DT" || "N/A"}
+                    {product.promoPrice ? product.promoPrice.toLocaleString() + " DT" : "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.sizes?.join(", ") || "N/A"}

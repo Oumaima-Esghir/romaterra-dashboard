@@ -18,15 +18,15 @@ function CreateProduct({ onClose, onAddCollection }) {
 
   const [form, setForm] = useState({
     images: [],
-    name: "aa",
-    description: "aaa",
-    price: 10,
-    promoPrice: 0,
-    quantityInStock: 100,
+    name: "",
+    description: "",
+    price: null,
+    promoPrice: null,
+    quantityInStock: null,
     size: "",
-    category: "665f1a2b3c4d5e6f78901234",
-    collection: "665f1a2b3c4d5e6f78901236",
-    status: "available",
+    category: null,
+    collection: null,
+    status: "Available",
   });
 
   const [images, setImages] = useState([]);
@@ -92,6 +92,7 @@ function CreateProduct({ onClose, onAddCollection }) {
             value={form.name}
             onChange={handleChange}
             className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
+            required
           />
 
           {/* DESCRIPTION */}
@@ -107,16 +108,17 @@ function CreateProduct({ onClose, onAddCollection }) {
           {/* PRICE + PROMO */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
-              type="text"
+              type="number"
               name="price"
               placeholder="Price"
               value={form.price}
               onChange={handleChange}
               className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
+              required
             />
 
             <input
-              type="text"
+              type="number"
               name="promoPrice"
               placeholder="Promo price (optional)"
               value={form.promoPrice}
@@ -222,7 +224,7 @@ function CreateProduct({ onClose, onAddCollection }) {
 
             <button
               type="submit"
-              onClick={handleSubmit}
+              onSubmit={handleSubmit}
               className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
             >
               Create Product
