@@ -17,17 +17,16 @@ function CreateProduct({ onClose, onAddCollection }) {
   ];
 
   const [form, setForm] = useState({
+    images: [],
     name: "aa",
     description: "aaa",
     price: 10,
-    quantityInStock: 100,
-    colors: "red",
-    images: [],
     promoPrice: "",
+    quantityInStock: 100,
     size: "",
     category: "665f1a2b3c4d5e6f78901234",
     collection: "665f1a2b3c4d5e6f78901236",
-    state: "available",
+    status: "available",
   });
 
   const [images, setImages] = useState([]);

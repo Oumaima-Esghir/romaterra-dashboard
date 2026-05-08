@@ -43,23 +43,6 @@ function CategoriesPage() {
     return products.filter((product) => product.category === selectedCategory);
   }, [products, selectedCategory]);
 
-  const handleValidationToggle = async (pubId, isvalidated) => {
-    try {
-      await axiosInstance.put(`/admin/pubs/${pubId}`, {
-        isvalidated: !isvalidated,
-      });
-
-      setProducts((currentProducts) =>
-        currentProducts.map((product) =>
-          product._id === pubId
-            ? { ...product, isvalidated: !isvalidated }
-            : product
-        )
-      );
-    } catch (err) {
-      setError("Failed to update product validation.");
-    }
-  };
 
   const getImageUrl = (product) => {
     if (!product.pubImage) return "https://via.placeholder.com/64";
@@ -128,12 +111,13 @@ function CategoriesPage() {
               <th className="px-4 py-3 text-left">Image</th>
               <th className="px-4 py-3 text-left">Title</th>
               <th className="px-4 py-3 text-left">Description</th>
-              <th className="px-4 py-3 text-left">Address</th>
-              <th className="px-4 py-3 text-left">Rating</th>
+              <th className="px-4 py-3 text-left">Price</th>
+              <th className="px-4 py-3 text-left">Price Promo</th>
+              <th className="px-4 py-3 text-left">Sizes</th>
+              <th className="px-4 py-3 text-left">Quantity</th>
               <th className="px-4 py-3 text-left">Category</th>
-              <th className="px-4 py-3 text-left">State</th>
-              <th className="px-4 py-3 text-left">Percentage</th>
-              <th className="px-4 py-3 text-center">Validated</th>
+              <th className="px-4 py-3 text-left">Collection</th>
+              <th className="px-4 py-3 text-center">Status</th>
               <th className="px-4 py-3 text-center">Actions</th>
             </tr>
           </thead>
@@ -141,20 +125,28 @@ function CategoriesPage() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="11" className="px-4 py-6 text-center text-gray-500">
+                <td
+                  colSpan="11"
+                  className="px-4 py-6 text-center text-gray-500"
+                >
                   Loading products...
                 </td>
               </tr>
             ) : filteredProducts.length === 0 ? (
               <tr>
-                <td colSpan="11" className="px-4 py-6 text-center text-gray-500">
+                <td
+                  colSpan="11"
+                  className="px-4 py-6 text-center text-gray-500"
+                >
                   No products found.
                 </td>
               </tr>
             ) : (
               filteredProducts.map((product, index) => (
                 <tr key={product._id} className="border-t hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-900">{index + 1}</td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {index + 1}
+                  </td>
 
                   <td className="px-4 py-3">
                     <img
@@ -174,32 +166,25 @@ function CategoriesPage() {
                     {product.description}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.adress || "N/A"}
+                    {product.price?.toLocaleString() + " DT" || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.rating ?? "N/A"}
+                    {product.promoPrice?.toLocaleString() + " DT" || "N/A"}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {product.sizes + " cm" || "N/A"}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-900">
+                    {product.quantityInStock ?? "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.category || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.state || "N/A"}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.state === "promo" ? product.pourcentage : "N/A"}
+                    {product.collection || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <label className="inline-flex relative items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={Boolean(product.isvalidated)}
-                        onChange={() =>
-                          handleValidationToggle(product._id, product.isvalidated)
-                        }
-                      />
-                      <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
+                     {product.state || "N/A"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-2">
