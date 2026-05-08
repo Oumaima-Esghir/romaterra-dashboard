@@ -17,11 +17,11 @@ function CategoriesPage() {
   const [showProduct, setShowProduct] = useState(false);
   const [viewProduct, setViewProduct] = useState();
 
-  const productView = (p)=>{
+  const productView = (p) => {
     setViewProduct(p);
     setShowProduct(true);
     console.log("Viewing product:", p);
-  }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -171,7 +171,7 @@ function CategoriesPage() {
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.name}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-900">
+                  <td className="px-4 py-3 text-sm text-gray-900 max-w-sm">
                     {product.description}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
@@ -183,7 +183,7 @@ function CategoriesPage() {
                       : "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.sizes?.join(", ") || "N/A"}
+                    {product.size || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.quantityInStock ?? "N/A"}
@@ -195,9 +195,24 @@ function CategoriesPage() {
                     {product.collection || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <div className="bg-gray-200 text-gray-800 font-bold py-1 px-1 rounded-full text-xs text-black">
-                      {product.status || "N/A"}
-                    </div>
+                    {/* STATUS BADGE */}
+                    {product.status === "Promo" && (
+                      <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs">
+                        PROMO
+                      </span>
+                    )}
+
+                    {product.status === "Available" && (
+                      <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
+                        AVAILABLE
+                      </span>
+                    )}
+
+                    {product.status === "Out of Stock" && (
+                      <span className="bg-red-200 text-red-600 px-3 py-1 rounded-full text-xs">
+                        OUT OF STOCK
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-2">
@@ -235,7 +250,12 @@ function CategoriesPage() {
         />
       )}
 
-       {showProduct && <ViewProduct product={viewProduct} onClose={() => setShowProduct(false)} />}
+      {showProduct && (
+        <ViewProduct
+          product={viewProduct}
+          onClose={() => setShowProduct(false)}
+        />
+      )}
     </div>
   );
 }
