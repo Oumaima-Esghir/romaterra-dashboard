@@ -19,6 +19,7 @@ function CategoriesPage() {
       try {
         const response = await axiosInstance.get("/products/");
         setProducts(response.data);
+        console.log("Fetched products:", response.data);
       } catch (err) {
         setError("Failed to fetch categories and products.");
       } finally {
@@ -43,13 +44,12 @@ function CategoriesPage() {
     return products.filter((product) => product.category === selectedCategory);
   }, [products, selectedCategory]);
 
-
-  const getImageUrl = (product) => {
+  /*  const getImageUrl = (product) => {
     if (!product.pubImage) return "https://via.placeholder.com/64";
     if (product.pubImage.startsWith("http")) return product.pubImage;
 
     return `${process.env.REACT_APP_API_URL}/images${product.pubImage}`;
-  };
+  }; */
 
   return (
     <div className="p-6">
@@ -151,8 +151,8 @@ function CategoriesPage() {
                   <td className="px-4 py-3">
                     <img
                       className="h-16 w-16 rounded object-cover"
-                      src={getImageUrl(product)}
-                      alt={product.title}
+                      //src={getImageUrl(product)}
+                      alt={product.name}
                       onError={(e) => {
                         e.currentTarget.src = "https://via.placeholder.com/64";
                       }}
@@ -160,7 +160,7 @@ function CategoriesPage() {
                   </td>
 
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.title}
+                    {product.name}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.description}
@@ -172,7 +172,7 @@ function CategoriesPage() {
                     {product.promoPrice?.toLocaleString() + " DT" || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.sizes + " cm" || "N/A"}
+                    {product.sizes?.join(", ") || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.quantityInStock ?? "N/A"}
@@ -184,7 +184,9 @@ function CategoriesPage() {
                     {product.collection || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-center">
-                     {product.state || "N/A"}
+                    <div className="bg-gray-200 text-gray-800 font-bold py-1 px-1 rounded-full text-xs text-black">
+                      {product.status || "N/A"}
+                      </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-2">

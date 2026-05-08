@@ -21,7 +21,7 @@ function CreateProduct({ onClose, onAddCollection }) {
     name: "aa",
     description: "aaa",
     price: 10,
-    promoPrice: "",
+    promoPrice: 0,
     quantityInStock: 100,
     size: "",
     category: "665f1a2b3c4d5e6f78901234",
@@ -178,14 +178,14 @@ function CreateProduct({ onClose, onAddCollection }) {
 
           {/* STATE */}
           <select
-            name="state"
-            value={form.state}
+            name="status"
+            value={form.status}
             onChange={handleChange}
             className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
           >
-            <option value="available">Available</option>
-            <option value="promo">Promo</option>
-            <option value="out-of-stock">Out of Stock</option>
+            <option value="Available">Available</option>
+            <option value="Promo">Promo</option>
+            <option value="Out of Stock">Out of Stock</option>
           </select>
 
           {/* IMAGES */}
