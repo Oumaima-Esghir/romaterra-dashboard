@@ -14,6 +14,14 @@ function CategoriesPage() {
 
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
+  const [showProduct, setShowProduct] = useState(false);
+  const [viewProduct, setViewProduct] = useState();
+
+  const productView = (p)=>{
+    setViewProduct(p);
+    setShowProduct(true);
+    console.log("Viewing product:", p);
+  }
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -170,7 +178,9 @@ function CategoriesPage() {
                     {product.price?.toLocaleString() + " DT" || "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
-                    {product.promoPrice ? product.promoPrice.toLocaleString() + " DT" : "N/A"}
+                    {product.promoPrice
+                      ? product.promoPrice.toLocaleString() + " DT"
+                      : "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-900">
                     {product.sizes?.join(", ") || "N/A"}
@@ -187,12 +197,12 @@ function CategoriesPage() {
                   <td className="px-4 py-3 text-center">
                     <div className="bg-gray-200 text-gray-800 font-bold py-1 px-1 rounded-full text-xs text-black">
                       {product.status || "N/A"}
-                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-center gap-2">
                       <button
-                        onClick={() => navigate(`/view-product/${product._id}`)}
+                        onClick={() => productView(product)}
                         className="px-3 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300"
                       >
                         View
@@ -225,7 +235,7 @@ function CategoriesPage() {
         />
       )}
 
-      <ViewProduct />
+       {showProduct && <ViewProduct product={viewProduct} onClose={() => setShowProduct(false)} />}
     </div>
   );
 }

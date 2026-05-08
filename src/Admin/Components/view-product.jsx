@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // 🧠 MOCK PRODUCT (replace later with API)
-const product = {
+/* const product = {
   _id: "1",
   name: "Ceramic Vase",
   description:
@@ -15,26 +15,17 @@ const product = {
   state: "promo",
   qty: 8,
   images: ["/example.png", "/example.png", "/example.png"],
-};
+}; */
 
-function ViewProduct() {
+function ViewProduct({ product, onClose }) {
   const navigate = useNavigate();
-  const { id } = useParams();
-
-  // 🧠 USE ID PROPERLY (fixes ESLint warning)
-  useEffect(() => {
-    console.log("Viewing product with ID:", id);
-
-    // 🔌 later replace with API:
-    // axios.get(`/api/products/${id}`)
-  }, [id]);
 
   return (
     <div
       className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden 
       bg-white/30 backdrop-blur-sm transition-transform z-50"
     >
-      <div className="max-w-5xl bg-white shadow-md rounded-lg p-6 border">
+      <div className="w-full max-w-5xl bg-white shadow-md rounded-lg p-6 border">
         {/* TITLE */}
         <h1
           className="mb-6 text-center"
@@ -77,7 +68,7 @@ function ViewProduct() {
 
             {/* PRICE */}
             <div className="flex items-center gap-3">
-              {product.state === "promo" ? (
+              {product.status === "Promo" ? (
                 <>
                   <p className="text-gray-400 line-through text-lg">
                     {product.price} TND
@@ -96,20 +87,20 @@ function ViewProduct() {
 
             {/* STATUS BADGE */}
             <div>
-              {product.state === "promo" && (
-                <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">
+              {product.status === "Promo" && (
+                <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs">
                   PROMO
                 </span>
               )}
 
-              {product.state === "available" && (
+              {product.status === "Available" && (
                 <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs">
                   AVAILABLE
                 </span>
               )}
 
-              {product.state === "out-of-stock" && (
-                <span className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs">
+              {product.status === "Out of Stock" && (
+                <span className="bg-red-200 text-red-600 px-3 py-1 rounded-full text-xs">
                   OUT OF STOCK
                 </span>
               )}
@@ -127,7 +118,7 @@ function ViewProduct() {
                 <strong>Size:</strong> {product.size}
               </p>
               <p>
-                <strong>Quantity:</strong> {product.qty}
+                <strong>Quantity:</strong> {product.quantityInStock}
               </p>
             </div>
 
@@ -146,7 +137,7 @@ function ViewProduct() {
               </button>
 
               <button
-                onClick={() => navigate("/categories")}
+                onClick={() => onClose()}
                 className="px-4 py-2 border rounded-md hover:bg-gray-100"
               >
                 Back
