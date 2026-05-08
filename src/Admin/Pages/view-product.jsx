@@ -30,7 +30,10 @@ function ViewProduct() {
   }, [id]);
 
   return (
-    <div className="p-6">
+     <div
+      className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden 
+      bg-white/30 backdrop-blur-sm transition-transform z-50"
+    >
 
       {/* TITLE */}
       <h1
