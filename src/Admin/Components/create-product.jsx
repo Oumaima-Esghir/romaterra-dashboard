@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
-function CreateProduct({ onClose, onAddCollection }) {
+function CreateProduct({ onClose, onAddCollection, product }) {
   const navigate = useNavigate();
 
   // 🧠 CATEGORY LIST
@@ -63,6 +63,23 @@ function CreateProduct({ onClose, onAddCollection }) {
 
     navigate("/categories");
   };
+
+  useEffect(() => {
+    if (product) {
+      setForm({
+        images: [],
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        promoPrice: product.promoPrice,
+        quantityInStock: product.quantityInStock,
+        size: product.size,
+        category: product.category,
+        collection: product.collection,
+        status: product.status,
+      });
+    }
+  }, [product]);
 
   return (
     <div

@@ -257,6 +257,14 @@ function CategoriesPage() {
         />
       )}
 
+       {editProduct && (
+        <CreateProduct
+          onClose={() => setEditProduct(false)}
+          onAddCollection={() => setEditProduct(false)}
+          product={product}
+        />
+      )}
+
       {showProduct && (
         <ViewProduct product={product} onClose={() => setShowProduct(false)} />
       )}
