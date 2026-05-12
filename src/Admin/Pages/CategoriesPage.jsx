@@ -15,10 +15,10 @@ function CategoriesPage() {
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showProduct, setShowProduct] = useState(false);
-  const [viewProduct, setViewProduct] = useState();
+  const [product, setproduct] = useState();
 
   const productView = (p) => {
-    setViewProduct(p);
+    setproduct(p);
     setShowProduct(true);
     console.log("Viewing product:", p);
   };
@@ -252,7 +252,7 @@ function CategoriesPage() {
 
       {showProduct && (
         <ViewProduct
-          product={viewProduct}
+          product={product}
           onClose={() => setShowProduct(false)}
         />
       )}
