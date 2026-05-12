@@ -8,6 +8,7 @@ import ViewProduct from "../Components/view-product.jsx";
 function CategoriesPage() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [product, setproduct] = useState();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -15,12 +16,18 @@ function CategoriesPage() {
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showProduct, setShowProduct] = useState(false);
-  const [product, setproduct] = useState();
+  const [editProduct, setEditProduct] = useState(false);
 
   const productView = (p) => {
     setproduct(p);
     setShowProduct(true);
     console.log("Viewing product:", p);
+  };
+
+  const productEdit = (p) => {
+    setproduct(p);
+    setEditProduct(true);
+    console.log("Editing product:", p);
   };
 
   useEffect(() => {
@@ -224,7 +231,7 @@ function CategoriesPage() {
                       </button>
 
                       <button
-                        onClick={() => navigate(`/edit-product/${product._id}`)}
+                        onClick={() => productEdit(product)}
                         className="px-3 py-1 text-xs bg-blue-200 rounded hover:bg-blue-300"
                       >
                         Edit
@@ -251,10 +258,7 @@ function CategoriesPage() {
       )}
 
       {showProduct && (
-        <ViewProduct
-          product={product}
-          onClose={() => setShowProduct(false)}
-        />
+        <ViewProduct product={product} onClose={() => setShowProduct(false)} />
       )}
     </div>
   );
