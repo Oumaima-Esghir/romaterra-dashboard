@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "../Components/create-category.jsx";
@@ -9,7 +9,7 @@ import { Eye, SquarePen, Trash2 } from "lucide-react";
 function CategoriesPage() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [product, setproduct] = useState();
+  const [product, setProduct] = useState();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,33 +19,51 @@ function CategoriesPage() {
   const [showProduct, setShowProduct] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
 
+  const fetchProducts = useCallback(async ({ showLoader = true } = {}) => {
+    if (showLoader) setLoading(true);
+    setError("");
+
+    try {
+      const response = await axiosInstance.get("/products/");
+      setProducts(response.data);
+      console.log("Fetched products:", response.data);
+    } catch (err) {
+      setError("Failed to fetch categories and products.");
+    } finally {
+      if (showLoader) setLoading(false);
+    }
+  }, []);
+
   const productView = (p) => {
-    setproduct(p);
+    setProduct(p);
     setShowProduct(true);
     console.log("Viewing product:", p);
   };
 
   const productEdit = (p) => {
-    setproduct(p);
+    setProduct(p);
     setEditProduct(true);
     console.log("Editing product:", p);
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axiosInstance.get("/products/");
-        setProducts(response.data);
-        console.log("Fetched products:", response.data);
-      } catch (err) {
-        setError("Failed to fetch categories and products.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const productDelete = async (id) => {
+    setLoading(true);
+    setError("");
 
+    try {
+      const response = await axiosInstance.delete(`/products/${id}`);
+      console.log("Deleted product:", response.data);
+      await fetchProducts({ showLoader: false });
+    } catch (err) {
+      setError("Failed to delete product.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   const categoriesList = useMemo(() => {
     const categories = products
@@ -239,7 +257,7 @@ function CategoriesPage() {
                       </button>
 
                       <button
-                        //onClick={() => productDelete(product)}
+                        onClick={() => productDelete(product._id)}
                         className="p-1 rounded-full hover:bg-red-100"
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />
