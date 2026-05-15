@@ -10,7 +10,6 @@ import OrdersPage from "./Pages/OrdersPage";
 import CollectionsPage from "./Pages/CollectionsPage";
 import CategoriesPage from "./Pages/CategoriesPage";
 
-import EditProduct from "./Pages/edit-product";
 import UserDetailPage from "./Pages/UserDetailPage";
 
 
@@ -99,15 +98,6 @@ function AdminPannel() {
             path="/categories"
             element={<CategoriesPage />}
           />
-          {/* <Route
-            path="/categories"
-            element={isConnected ? <CategoriesPage /> : <LoginPage />}
-          />*/}
-
-          <Route
-           path="/edit-product/:id" 
-           element={<EditProduct
-            />} />
          
           <Route 
           path="/view-collection/:id" 
