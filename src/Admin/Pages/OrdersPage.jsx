@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import CreateOrder from "../Components/create-order.jsx";
+import CreateOrder from "../Components/Create-order.jsx";
 
 const mockOrders = [
   {

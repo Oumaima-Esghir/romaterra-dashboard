@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "../Components/Create-category.jsx";
-import CreateProduct from "../Components/create-product.jsx";
-import ViewProduct from "../Components/view-product.jsx";
+import CreateProduct from "../Components/Create-product.jsx";
+import ViewProduct from "../Components/View-product.jsx";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
 
 function CategoriesPage() {
