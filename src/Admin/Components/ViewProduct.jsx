@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateProduct from "./Create-product.jsx";
+import CreateProduct from "./CreateProduct.jsx";
 
 function ViewProduct({ product, onClose }) {
   const navigate = useNavigate();
