@@ -4,6 +4,7 @@ import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "../Components/create-category.jsx";
 import CreateProduct from "../Components/create-product.jsx";
 import ViewProduct from "../Components/view-product.jsx";
+import { Eye, SquarePen, Trash2 } from "lucide-react";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -225,16 +226,23 @@ function CategoriesPage() {
                     <div className="flex justify-center gap-2">
                       <button
                         onClick={() => productView(product)}
-                        className="px-3 py-1 text-xs bg-gray-200 rounded hover:bg-gray-300"
+                        className="p-1 rounded-full hover:bg-blue-100"
                       >
-                        View
+                        <Eye className="h-5 w-5 text-blue-500" />
                       </button>
 
                       <button
                         onClick={() => productEdit(product)}
-                        className="px-3 py-1 text-xs bg-blue-200 rounded hover:bg-blue-300"
+                        className="p-1 rounded-full hover:bg-gray-200"
                       >
-                        Edit
+                        <SquarePen className="h-4 w-4 text-gray-600" />
+                      </button>
+
+                      <button
+                        //onClick={() => productDelete(product)}
+                        className="p-1 rounded-full hover:bg-red-100"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
                       </button>
                     </div>
                   </td>
@@ -257,7 +265,7 @@ function CategoriesPage() {
         />
       )}
 
-       {editProduct && (
+      {editProduct && (
         <CreateProduct
           onClose={() => setEditProduct(false)}
           onAddCollection={() => setEditProduct(false)}
