@@ -1,24 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// 🧠 MOCK PRODUCT (replace later with API)
-/* const product = {
-  _id: "1",
-  name: "Ceramic Vase",
-  description:
-    "Handcrafted ceramic vase inspired by ancient artisan techniques. Each piece is unique and shaped by hand.",
-  price: 120,
-  promoPrice: 96,
-  size: "23×10 cm",
-  category: "Decoration",
-  collection: "Summer Collection",
-  state: "promo",
-  qty: 8,
-  images: ["/example.png", "/example.png", "/example.png"],
-}; */
+import CreateProduct from "./Create-product.jsx";
 
 function ViewProduct({ product, onClose }) {
   const navigate = useNavigate();
+  const [editProduct, setEditProduct] = useState(false);
+
+  const HandelEditProduct = () => {
+    setEditProduct(true);
+  };
 
   return (
     <div
@@ -130,7 +120,7 @@ function ViewProduct({ product, onClose }) {
             {/* BUTTONS */}
             <div className="flex gap-3 mt-5">
               <button
-                onClick={() => navigate(`/edit-product/${product._id}`)}
+                onClick={() => HandelEditProduct()}
                 className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
               >
                 Edit
@@ -146,6 +136,14 @@ function ViewProduct({ product, onClose }) {
           </div>
         </div>
       </div>
+
+      {editProduct && (
+        <CreateProduct
+          onClose={() => setEditProduct(false)}
+          onAddCollection={() => setEditProduct(false)}
+          product={product}
+        />
+      )}
     </div>
   );
 }

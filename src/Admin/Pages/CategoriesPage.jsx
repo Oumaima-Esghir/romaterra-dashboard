@@ -5,6 +5,7 @@ import CreateCategory from "../Components/Create-category.jsx";
 import CreateProduct from "../Components/Create-product.jsx";
 import ViewProduct from "../Components/View-product.jsx";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
+import ConfirmAlert from "../Components/ConfirmAlert.jsx";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -294,6 +295,11 @@ function CategoriesPage() {
       {showProduct && (
         <ViewProduct product={product} onClose={() => setShowProduct(false)} />
       )}
+
+       {/* <ConfirmAlert
+        title="test"
+        message="test"
+      /> */}
     </div>
   );
 }
