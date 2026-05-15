@@ -103,7 +103,7 @@ function CreateProduct({ onClose, onAddCollection, product }) {
             color: "#884B2C",
           }}
         >
-          Create Product
+          {product ? "Edit" : "Create"} Product
         </h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -255,7 +255,7 @@ function CreateProduct({ onClose, onAddCollection, product }) {
               onSubmit={handleSubmit}
               className="px-4 py-2 bg-[#A2664E] text-white rounded-md hover:opacity-90"
             >
-              Create Product
+              {product ? "Edit" : "Create"} Product
             </button>
           </div>
         </form>

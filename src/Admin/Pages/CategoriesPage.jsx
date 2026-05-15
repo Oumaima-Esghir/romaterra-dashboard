@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import CreateCategory from "../Components/CreateCategory.jsx";
-import CreateProduct from "../Components/CreateProduct.jsx";
+import CreateProduct from "../Components/FormProduct.jsx";
 import ViewProduct from "../Components/ViewProduct.jsx";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
 import ConfirmAlert from "../Components/ConfirmAlert.jsx";

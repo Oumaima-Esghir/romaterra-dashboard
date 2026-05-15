@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateProduct from "./CreateProduct.jsx";
+import CreateProduct from "./FormProduct.jsx";
 
 function ViewProduct({ product, onClose }) {
   const navigate = useNavigate();
