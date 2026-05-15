@@ -33,7 +33,13 @@ function CreateProduct({ onClose, onAddCollection, product }) {
 
   // INPUT HANDLER
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+      ...(name === "status" && value !== "Promo" ? { promoPrice: null } : {}),
+    }));
   };
 
   // IMAGES HANDLER
@@ -140,7 +146,12 @@ function CreateProduct({ onClose, onAddCollection, product }) {
               placeholder="Promo price (optional)"
               value={form.promoPrice}
               onChange={handleChange}
-              className="px-4 py-3 border rounded-md outline-none focus:border-[#A2664E]"
+              disabled={form.status !== "Promo"}
+              className={`px-4 py-3 border rounded-md outline-none focus:border-[#A2664E] ${
+                form.status !== "Promo"
+                  ? "cursor-not-allowed bg-gray-100 text-gray-400"
+                  : ""
+              }`}
             />
           </div>
 
