@@ -140,7 +140,7 @@ function ViewProduct({ product, onClose }) {
       {editProduct && (
         <CreateProduct
           onClose={() => setEditProduct(false)}
-          onAddCollection={() => setEditProduct(false)}
+          onSaved={() => setEditProduct(false)}
           product={product}
         />
       )}

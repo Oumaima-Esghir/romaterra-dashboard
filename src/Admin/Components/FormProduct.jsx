@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
-function CreateProduct({ onClose, onAddCollection, product }) {
+function CreateProduct({ onClose, onSaved, product }) {
   const navigate = useNavigate();
 
   // 🧠 CATEGORY LIST
@@ -48,7 +48,7 @@ function CreateProduct({ onClose, onAddCollection, product }) {
   };
 
   // SUBMIT
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const productData = {
@@ -56,18 +56,28 @@ function CreateProduct({ onClose, onAddCollection, product }) {
       images,
     };
 
-    // 🧠 API CALL LATER
-    axiosInstance
-      .post("/products/", productData)
-      .then((response) => {
-        console.log("Product created successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error creating product:", error);
-      });
-    console.log("PRODUCT CREATED:", productData);
+    try {
+      if (product?._id) {
+        const response = await axiosInstance.put(
+          `/products/${product._id}`,
+          productData,
+        );
 
-    navigate("/categories");
+        console.log("Product updated successfully:", response.data);
+      } else {
+        const response = await axiosInstance.post("/products/", productData);
+
+        console.log("Product created successfully:", response.data);
+      }
+
+      onSaved?.();
+      onClose?.();
+    } catch (error) {
+      console.error(
+        product ? "Error updating product:" : "Error creating product:",
+        error,
+      );
+    }
   };
 
   useEffect(() => {

@@ -280,14 +280,14 @@ function CategoriesPage() {
       {showCreateProduct && (
         <CreateProduct
           onClose={() => setShowCreateProduct(false)}
-          onAddCollection={() => setShowCreateProduct(false)}
+          onSaved={fetchProducts}
         />
       )}
 
       {editProduct && (
         <CreateProduct
           onClose={() => setEditProduct(false)}
-          onAddCollection={() => setEditProduct(false)}
+          onSaved={fetchProducts}
           product={product}
         />
       )}
@@ -296,7 +296,7 @@ function CategoriesPage() {
         <ViewProduct product={product} onClose={() => setShowProduct(false)} />
       )}
 
-       {/* <ConfirmAlert
+      {/* <ConfirmAlert
         title="test"
         message="test"
       /> */}
