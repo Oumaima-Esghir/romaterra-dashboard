@@ -13,12 +13,15 @@ function CategoriesPage() {
   const [product, setProduct] = useState();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [showCreateCategory, setShowCreateCategory] = useState(false);
   const [showCreateProduct, setShowCreateProduct] = useState(false);
   const [showProduct, setShowProduct] = useState(false);
   const [editProduct, setEditProduct] = useState(false);
+  const [alertDelete, setAlertDelete] = useState(false);
+  const [ProductToDelete, setProductToDelete] = useState(null);
 
   const fetchProducts = useCallback(async ({ showLoader = true } = {}) => {
     if (showLoader) setLoading(true);
@@ -47,18 +50,25 @@ function CategoriesPage() {
     console.log("Editing product:", p);
   };
 
-  const productDelete = async (id) => {
-    setLoading(true);
+  const productToDelete = (product) => {
+    setProductToDelete(product);
+    setAlertDelete(true);
+    console.log("Preparing to delete product:", product);
+  };
+
+  const productDelete = async (product) => {
+    setDeleteLoading(true);
     setError("");
 
     try {
-      const response = await axiosInstance.delete(`/products/${id}`);
-      console.log("Deleted product:", response.data);
+      await axiosInstance.delete(`/products/${product._id}`);
       await fetchProducts({ showLoader: false });
+      setAlertDelete(false);
+      setProductToDelete(null);
     } catch (err) {
       setError("Failed to delete product.");
     } finally {
-      setLoading(false);
+      setDeleteLoading(false);
     }
   };
 
@@ -258,7 +268,7 @@ function CategoriesPage() {
                       </button>
 
                       <button
-                        onClick={() => productDelete(product._id)}
+                        onClick={() => productToDelete(product)}
                         className="p-1 rounded-full hover:bg-red-100"
                       >
                         <Trash2 className="h-4 w-4 text-red-500" />
@@ -296,10 +306,15 @@ function CategoriesPage() {
         <ViewProduct product={product} onClose={() => setShowProduct(false)} />
       )}
 
-      {/* <ConfirmAlert
-        title="test"
-        message="test"
-      /> */}
+      {alertDelete && (
+        <ConfirmAlert
+          title="Delete Product?"
+          message={`This will permanently remove “${ProductToDelete?.name || "unknown"}” from your list.`}
+          onConfirm={() => productDelete(ProductToDelete)}
+          onCancel={() => setAlertDelete(false)}
+          loading={deleteLoading}
+        />
+      )}
     </div>
   );
 }
